@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Test-Time Training on Video Streams">
+  <meta name="keywords" content="self-supervised learning, continual learning, online learning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    Test-Time Training on Video Streams
+  </title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-3 publication-title">
+            Test-Time Training on Video Streams
+          </h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a 
+                href="https://renwang435.github.io/">Renhao Wang
+              </a><sup>1*</sup>,
+            </span>
+            <span class="author-block"> 
+              <a
+                href="https://yueatsprograms.github.io/">Yu Sun
+              </a><sup>1*</sup>,
+            </span>
+            <span class="author-block"> <a 
+              href="https://yossigandelsman.github.io/">Yossi Gandelsman
+              </a><sup>1</sup>,
+            </span>
+            <span class="author-block"> <a
+                href="https://xinleic.xyz/">Xinlei Chen
+              </a><sup>2</sup>,
+            </span>
+            <span class="author-block"> <a
+              href="http://people.eecs.berkeley.edu/~efros/">Alexei A. Efros
+            </a><sup>1</sup>,
+            </span>
+            <span class="author-block"> <a 
+              href="https://xiaolonw.github.io/">Xiaolong Wang
+              </a><sup>3</sup>
+            </span><br>
+            <span class="authors-affiliation"><sup>1</sup>UC Berkeley</span>,
+            <span class="authors-affiliation"><sup>2</sup>Meta AI</span>,
+            <span class="authors-affiliation"><sup>3</sup>UC San Diego</span>
+            <br>
+            <div class="is-size-6 publication-authors">
+              <span style="font-size: 0.9em;">*Equal Contribution</span><br>
+              <!-- <span class="author-block">
+                International Conference on Learning Representations (ICLR) 2023 <span style="color: #a71ff5;">[Spotlight]</span>
+              </span> -->
+            </div>
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://video-ttt.github.io/" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                        <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <span class="link-block"> 
+                  <a href="https://video-ttt.github.io/" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                        <i class="fab fa-github"></i>
+                    </span>
+                    <span>Dataset, Code & Models</span>
+                    </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <video id="teaser" autoplay muted loop playsinline height="100%">
+      <source src="video/small_pc_2.mp4" type="video/mp4"/>
+    </video>
+    <p style="font-size: 18px; text-align: center">
+      The blue points on the left are observed by depth camera and the red points are imagined points for robot finger.
+    </p>
+  </div>
+</section> -->
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <video controls muted loop autoplay playsinline height="100%" width="100%">
+      <source src="videos/teaser.mp4" type="video/mp4"/>
+    </video>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Traditionally, single-image models are evaluated on videos as 
+            collections of unordered frames. Instead, we evaluate on videos in 
+            temporal order, making a prediction on the current frame before the 
+            next arrives, after training at test time on frames from the recent 
+            past. We investigate techniques for test-time training without 
+            ground truth labels, and find that masked autoencoders perform the 
+            best. While most of the components of our algorithm have been 
+            introduced before, our novelty lies in combining them effectively 
+            on videos. We significantly improve the state-of-the-art on real-world 
+            applications, and discover that forgetting can be beneficial in our 
+            streaming setting.
+          </p>
+          <br>
+          <br>
+        </div>
+
+        <h2 class="title is-2">Video Colorization</h2>
+        <br>
+        <br>
+
+        <h2 class="title is-3">L'Arrivée d'un Train En Gare de La Ciotat ("The Arrival of a Train")</h2>
+        <div class="content has-text-justified">
+          <div class="columns is-centered interpolation-panel" style="background: #FDFFFF;">
+            <div class="column has-text-centered">
+              <h4> Input Video </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/original/small_train.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> Baseline </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/m2f/small_train_col.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> TTT </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/ttt/small_train_ttt.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </div>
+          <br>
+        </div>
+
+        <h2 class="title is-3">La Pêche Aux Poissons Rouges ("Fishing for Goldfish")</h2>
+        <div class="content has-text-justified">
+          <div class="columns is-centered interpolation-panel" style="background: #FDFFFF;">
+            <div class="column has-text-centered">
+              <h4> Input Video </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/original/small_goldfish.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> Baseline </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/m2f/small_goldfish_col.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> TTT </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/ttt/small_goldfish_ttt.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </div>
+          <br>
+        </div>
+
+        <h2 class="title is-3">Repas de Bébé ("Baby's Breakfast")</h2>
+        <div class="content has-text-justified">
+          <div class="columns is-centered interpolation-panel" style="background: #FDFFFF;">
+            <div class="column has-text-centered">
+              <h4> Input Video </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/original/small_baby.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> Baseline </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/m2f/small_baby_col.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> TTT </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/ttt/small_baby_ttt.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </div>
+          <br>
+        </div>
+
+        <h2 class="title is-3">COCO-Videos Example (Havana)</h2>
+        <div class="content has-text-justified">
+          <div class="columns is-centered interpolation-panel" style="background: #FDFFFF;">
+            <div class="column has-text-centered">
+              <h4> RGB Ground Truth </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/original/havana.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> Baseline </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/m2f/havana.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> TTT </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/colorization/ttt/havana.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </div>
+          <br>
+        </div>
+
+
+
+        <h2 class="title is-2">COCO Videos - Instance Segmentation</h2>
+        <br>
+        <br>
+
+        <h2 class="title is-3">Restaurant</h2>
+        <div class="content has-text-justified">
+          <div class="columns is-centered interpolation-panel" style="background: #FDFFFF;">
+            <div class="column has-text-centered">
+              <h4> Input Video </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/original/small_restaurant.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> Baseline </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/m2f/instance/small_restaurant.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> TTT </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/ttt/instance/small_restaurant.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </div>
+          <br>
+        </div>
+
+        <h2 class="title is-3">Havana</h2>
+        <div class="content has-text-justified">
+          <div class="columns is-centered interpolation-panel" style="background: #FDFFFF;">
+            <div class="column has-text-centered">
+              <h4> Input Video </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/original/small_havana.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> Baseline </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/m2f/instance/small_havana.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> TTT </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/ttt/instance/small_havana.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </div>
+          <br>
+        </div>
+        
+        
+
+
+        <h2 class="title is-2">COCO Videos - Panoptic Segmentation</h2>
+        <br>
+        <br>
+
+        <h2 class="title is-3">School</h2>
+        <div class="content has-text-justified">
+          <div class="columns is-centered interpolation-panel" style="background: #FDFFFF;">
+            <div class="column has-text-centered">
+              <h4> Input Video </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/original/small_school.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> Baseline </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/m2f/panoptic/small_school.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> TTT </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/ttt/panoptic/small_school.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </div>
+          <br>
+        </div>
+
+        <h2 class="title is-3">Bangkok</h2>
+        <div class="content has-text-justified">
+          <div class="columns is-centered interpolation-panel" style="background: #FDFFFF;">
+            <div class="column has-text-centered">
+              <h4> Input Video </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/original/small_bangkok.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> Baseline </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/m2f/panoptic/small_bangkok.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> TTT </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/coco_videos/ttt/panoptic/small_bangkok.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </div>
+          <br>
+        </div>
+
+
+        <h2 class="title is-2">KITTI-STEP - Semantic Segmentation</h2>
+        <br>
+        <br>
+
+        <h2 class="title is-3">Video 0002</h2>
+        <div class="content has-text-justified">
+          <div class="columns is-centered interpolation-panel" style="background: #FDFFFF;">
+            <div class="column has-text-centered">
+              <h4> Input Video </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/kitti_step/original/small_0002.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> Baseline </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/kitti_step/m2f/small_0002.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> TTT </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/kitti_step/ttt/small_0002.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </div>
+          <br>
+        </div>
+
+        <h2 class="title is-3">Video 0018</h2>
+        <div class="content has-text-justified">
+          <div class="columns is-centered interpolation-panel" style="background: #FDFFFF;">
+            <div class="column has-text-centered">
+              <h4> Input Video </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/kitti_step/original/small_0018.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> Baseline </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/kitti_step/m2f/small_0018.mp4" type="video/mp4"/>
+              </video>
+            </div>
+            <div class="column has-text-centered">
+              <h4> TTT </h4>
+              <video autoplay muted loop playsinline width="100%">
+                <source src="videos/kitti_step/ttt/small_0018.mp4" type="video/mp4"/>
+              </video>
+            </div>
+          </div>
+          <br>
+        </div>
+
+        <!-- <h2 class="title is-3">Additional Results</h2>
+        <div class="content has-text-justified">
+          <div class="columns is-centered interpolation-panel" style="background: #FDFFFF;">
+            <div class="column has-text-centered">
+              <h4> The full set of results, as well as our datasets, can be found at: 
+                <a 
+                  href=https://www.dropbox.com/s/2ad48b3lzhvl47c/video_ttt_full_results.zip?dl=0>
+                  https://www.dropbox.com/s/2ad48b3lzhvl47c/video_ttt_full_results.zip?dl=0
+                </a>
+              </h4>
+            </div>
+        </div> -->
+
+        
+      <br/>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
